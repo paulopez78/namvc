@@ -1,6 +1,7 @@
 FROM qlik/gradle
 
 COPY . /app
-WORKDIR /app
+RUN gradle build
+WORKDIR /app/build/libs
 EXPOSE 8000
-
+ENTRYPOINT java -jar namvc.jar
