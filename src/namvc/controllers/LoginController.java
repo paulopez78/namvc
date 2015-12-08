@@ -30,7 +30,8 @@ public class LoginController extends NaMvcController{
       }
 
       //redirect
-      return new SetSessionAction(sessionId, context.getSession().getTimeout(), redirectUrl);
+      return new SetSessionAction(sessionId, context.getSession().COOKIE_NAME,
+              context.getSession().getTimeout(), redirectUrl);
 
     }
     catch(Exception ex)

@@ -8,32 +8,28 @@ import java.util.HashMap;
 public class Users {
   private Map<String,List<String>> userRoles;
 
-  // Passwords are HASHED
   private Map<String,String> userPasswords;
 
   public void create()
   {
+    //TODO: read from a file
     userRoles = new HashMap<String,List<String>>()
     {
       {
           put("user1", new ArrayList<String>(){
             {
               add("Role1");
-              add("Role2");
               add("Role3");
             }
           });
           put("user2", new ArrayList<String>(){
             {
-              add("Role1");
               add("Role2");
               add("Role3");
             }
           });
           put("user3", new ArrayList<String>(){
             {
-              add("Role1");
-              add("Role2");
               add("Role3");
             }
           });

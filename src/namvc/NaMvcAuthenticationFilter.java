@@ -6,6 +6,7 @@ import namvc.controllers.NaMvcAction;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -31,8 +32,8 @@ public class NaMvcAuthenticationFilter extends Filter {
     public void doFilter(HttpExchange exchange, Chain chain)
         throws IOException {
 
-        String sessionId = getSessionId(exchange);
-        if (sessionId.equals(""))
+        String cookie = getSesionCookie(exchange);
+        if (cookie.equals(""))
         {
           // redirect to login page with the current path /login?url=/page1
           NaMvcAction redirect = new RedirectAction("/login?redirectUrl="+ exchange.getRequestURI().getPath());
@@ -40,31 +41,52 @@ public class NaMvcAuthenticationFilter extends Filter {
         }
         else
         {
+            String sessionId = getSessionId(cookie);
             NaMvcPrincipal currentPrincipal = context.getSession().getPrincipal(sessionId);
             exchange.setAttribute("principal", currentPrincipal);
             exchange.setAttribute("sessionId", sessionId);
 
+            sendCookieSession(exchange, cookie);
             chain.doFilter(exchange);
         }
     }
 
-    private String getSessionId(HttpExchange exchange)
+    private void sendCookieSession(HttpExchange exchange, String cookie)
+    {
+        Headers respHeaders = exchange.getResponseHeaders();
+        List<String> values = new ArrayList<>();
+        values.add(cookie +";max-age=" + this.context.getSession().getTimeout()+ ";version=1;Path=/;HttpOnly");
+        respHeaders.put("Set-Cookie", values);
+    }
+
+    private String getSesionCookie(HttpExchange exchange)
     {
         // some small sanity check
         Headers headers = exchange.getRequestHeaders();
         List<String> cookies = headers.get("Cookie");
+        String cookieSession = "";
 
         if (cookies != null)
         {
-            String sessionId = cookies.stream()
-                    .filter(cookie -> cookie.contains("NAMVCSESSIONID"))
+             cookieSession = cookies.stream()
+                    .filter(cookie -> cookie.contains(this.context.getSession().COOKIE_NAME))
                     .findFirst()
                     .get();
 
-            // parse session Id
-            return sessionId.split("=")[1];
         }
 
-        return "";
+        return cookieSession;
+    }
+
+    private String getSessionId(String cookieSession)
+    {
+        String sessionId = "";
+        String[] cookiePart = cookieSession.split("=");
+        if (cookiePart.length > 0)
+        {
+            sessionId = cookiePart[1];
+        }
+
+        return sessionId;
     }
 }

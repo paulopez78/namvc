@@ -1,17 +1,11 @@
 package namvc;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpContext;
-
-import com.sun.tools.javac.util.List;
+import com.sun.net.httpserver.HttpServer;
 import namvc.controllers.NaMvcController;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 /*
  * a simple mvc application based on simple HttpServer
@@ -19,24 +13,18 @@ import namvc.controllers.NaMvcController;
 public class NaMvcApp implements NaMvcContext {
   private HttpServer server;
   private NaMvcHttpSession session;
-  private NaMvcPrincipal principal;
   private Users users;
 
   public NaMvcApp(int port, int sessionTimeOut) throws IOException
   {
     this.server = HttpServer.create(new InetSocketAddress(port), 0);
     this.session = new NaMvcHttpSession(sessionTimeOut);
-    this.principal = new NaMvcPrincipal("", new ArrayList<>());
     this.users = new Users();
   }
 
   public NaMvcHttpSession getSession(){
     return this.session;
   }
-
-  public NaMvcPrincipal getPrincipal() { return this.principal; }
-
-  public void setPrincipal(NaMvcPrincipal principal) { this.principal = principal; }
 
   public Users getUsers(){
     return this.users;

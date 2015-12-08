@@ -7,6 +7,7 @@ import java.util.UUID;
 public class NaMvcHttpSession {
     private int timeout;
     private Map<String, NaMvcPrincipal> sessions;
+    public static final String COOKIE_NAME = "NAMVCSESSIONID";
 
     public NaMvcHttpSession(int timeout)
     {

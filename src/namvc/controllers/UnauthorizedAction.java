@@ -2,20 +2,13 @@ package namvc.controllers;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
-public class UnauthorizedAction extends NaMvcAction {
-    @Override
-    public void execute(HttpExchange t)
+public class UnauthorizedAction extends RenderAction {
+    public UnauthorizedAction()
     {
-        try
-        {
-            t.sendResponseHeaders(HttpURLConnection.HTTP_UNAUTHORIZED, -1);
-            t.close();
-        }
-        catch(Exception ex)
-        {
-
-        }
+        super("Not Authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
     }
 }

@@ -2,20 +2,12 @@ package namvc.controllers;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 
-public class NotFoundAction extends NaMvcAction {
-    @Override
-    public void execute(HttpExchange t)
+public class NotFoundAction extends RenderAction {
+    public NotFoundAction()
     {
-        try
-        {
-            t.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, -1);
-            t.close();
-        }
-        catch(Exception ex)
-        {
-
-        }
+        super("Not Found", HttpURLConnection.HTTP_NOT_FOUND);
     }
 }

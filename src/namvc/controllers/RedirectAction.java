@@ -18,17 +18,13 @@ import com.sun.net.httpserver.HttpExchange;
     }
 
     @Override
-    public void execute(HttpExchange t)
+    public void execute(HttpExchange t) throws IOException
     {
       Headers respHeaders = t.getResponseHeaders();
       List<String> values = new ArrayList<>();
       values.add(this.path);
       respHeaders.put("Location", values);
-      try {
-        t.sendResponseHeaders(HttpURLConnection.HTTP_MOVED_PERM, -1);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      t.sendResponseHeaders(HttpURLConnection.HTTP_MOVED_PERM, -1);
       t.close();
     }
   }

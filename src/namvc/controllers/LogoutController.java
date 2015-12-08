@@ -14,7 +14,7 @@ public class LogoutController extends NaMvcController{
     try
     {
       context.getSession().kill(httpContext.getSessionId());
-      return new SetSessionAction(httpContext.getSessionId(), 0, "/login");
+      return new SetSessionAction(httpContext.getSessionId(), context.getSession().COOKIE_NAME, 0, "/login");
 
     }
     catch(Exception ex)

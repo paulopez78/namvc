@@ -8,7 +8,7 @@ import namvc.controllers.LoginController;
 public class App {
   public static void main(String[] args) throws Exception {
 
-    NaMvcApp app = new NaMvcApp(8000, 60 * 5);
+    NaMvcApp app = new NaMvcApp(8000, 30);
 
     app.route("/page1", new PageController(), "Role1");
     app.route("/page2", new PageController(), "Role2");
