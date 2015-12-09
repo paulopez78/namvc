@@ -3,22 +3,14 @@ apply plugin: 'java'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'namvc.App'
+        attributes 'Main-Class': 'main.java.namvc.App'
     }
 }
 
 task myRun(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
-  main = "namvc.App"
+  main = "main.java.namvc.App"
 }
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/namvc'
-        }
-    }
-  }
 
 // In this section you declare where to find the dependencies of your project
 repositories {
