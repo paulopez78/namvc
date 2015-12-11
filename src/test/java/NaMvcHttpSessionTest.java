@@ -12,28 +12,28 @@ public class NaMvcHttpSessionTest {
     @Test
     public void createSessionTest() {
         //Arrange
-        NaMvcHttpSession testee = new NaMvcHttpSession(5);
+        NaMvcHttpSession test = new NaMvcHttpSession(5);
         NaMvcPrincipal principal = createPrincipal();
 
         //Act
-        String sessionId = testee.create(principal);
+        String sessionId = test.create(principal);
 
         //Assert
-        assertEquals(principal.getUserName(), testee.getPrincipal(sessionId).getUserName());
+        assertEquals(principal.getUserName(), test.getPrincipal(sessionId).getUserName());
     }
 
     @Test
     public void killSessionTest() {
         //Arrange
-        NaMvcHttpSession testee = new NaMvcHttpSession(5);
+        NaMvcHttpSession test = new NaMvcHttpSession(5);
         NaMvcPrincipal principal = createPrincipal();
-        String sessionId = testee.create(principal);
+        String sessionId = test.create(principal);
 
         //Act
-        testee.kill(sessionId);
+        test.kill(sessionId);
 
         //Assert
-        assertNull(testee.getPrincipal(sessionId));
+        assertNull(test.getPrincipal(sessionId));
     }
 
     private NaMvcPrincipal createPrincipal()
