@@ -1,4 +1,4 @@
-package main.java.namvc.models;
+package namvc.models;
 
 
 public class PageModel {

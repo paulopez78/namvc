@@ -1,6 +1,6 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
-import main.java.namvc.Users;
+import namvc.Users;
 
 public interface NaMvcContext  {
   NaMvcHttpSession getSession();

@@ -1,4 +1,4 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
 public abstract class NaMvcView
 {

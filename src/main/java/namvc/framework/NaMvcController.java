@@ -1,8 +1,8 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
-import main.java.namvc.framework.httpactions.NaMvcAction;
-import main.java.namvc.framework.httpactions.RedirectAction;
-import main.java.namvc.framework.httpactions.RenderAction;
+import namvc.framework.httpactions.NaMvcAction;
+import namvc.framework.httpactions.RedirectAction;
+import namvc.framework.httpactions.RenderAction;
 
 public abstract class NaMvcController{
   protected NaMvcView View;

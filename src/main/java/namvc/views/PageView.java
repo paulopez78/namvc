@@ -1,9 +1,7 @@
-package main.java.namvc.views;
+package namvc.views;
 
-import main.java.namvc.framework.NaMvcView;
-import main.java.namvc.models.PageModel;
-
-import java.util.Map;
+import namvc.framework.NaMvcView;
+import namvc.models.PageModel;
 
 public class PageView extends NaMvcView
 {

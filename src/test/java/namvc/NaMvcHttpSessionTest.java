@@ -1,7 +1,7 @@
-package test.java;
+package namvc;
 
-import main.java.namvc.framework.NaMvcHttpSession;
-import main.java.namvc.framework.NaMvcPrincipal;
+import namvc.framework.NaMvcHttpSession;
+import namvc.framework.NaMvcPrincipal;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

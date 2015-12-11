@@ -3,13 +3,13 @@ apply plugin: 'java'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'main.java.namvc.App'
+        attributes 'Main-Class': 'namvc.App'
     }
 }
 
 task myRun(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
-  main = "main.java.namvc.App"
+  main = "namvc.App"
 }
 
 // In this section you declare where to find the dependencies of your project

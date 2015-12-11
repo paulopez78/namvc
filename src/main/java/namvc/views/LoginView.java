@@ -1,6 +1,6 @@
-package main.java.namvc.views;
+package namvc.views;
 
-import main.java.namvc.framework.NaMvcView;
+import namvc.framework.NaMvcView;
 
 public class LoginView extends NaMvcView
 {

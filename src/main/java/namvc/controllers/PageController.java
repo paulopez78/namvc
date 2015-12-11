@@ -1,12 +1,12 @@
-package main.java.namvc.controllers;
+package namvc.controllers;
 
-import main.java.namvc.framework.httpactions.NaMvcAction;
-import main.java.namvc.framework.NaMvcContext;
-import main.java.namvc.framework.NaMvcController;
-import main.java.namvc.framework.NaMvcHttpContext;
-import main.java.namvc.framework.httpactions.RenderAction;
-import main.java.namvc.models.PageModel;
-import main.java.namvc.views.PageView;
+import namvc.framework.httpactions.NaMvcAction;
+import namvc.framework.NaMvcContext;
+import namvc.framework.NaMvcController;
+import namvc.framework.NaMvcHttpContext;
+import namvc.framework.httpactions.RenderAction;
+import namvc.models.PageModel;
+import namvc.views.PageView;
 
 public class PageController extends NaMvcController {
   public PageController()

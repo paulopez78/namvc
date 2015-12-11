@@ -1,10 +1,10 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
 
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
-import main.java.namvc.framework.httpactions.NaMvcAction;
-import main.java.namvc.framework.httpactions.NotFoundAction;
+import namvc.framework.httpactions.NaMvcAction;
+import namvc.framework.httpactions.NotFoundAction;
 
 import java.io.IOException;
 

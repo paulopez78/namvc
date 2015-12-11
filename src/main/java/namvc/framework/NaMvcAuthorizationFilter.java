@@ -1,11 +1,11 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
 import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Filter;
-import main.java.namvc.framework.httpactions.NaMvcAction;
-import main.java.namvc.framework.httpactions.UnauthorizedAction;
+import namvc.framework.httpactions.NaMvcAction;
+import namvc.framework.httpactions.UnauthorizedAction;
 
 // https://leonardom.wordpress.com/2009/08/06/getting-parameters-from-httpexchange/
 public class NaMvcAuthorizationFilter extends Filter {

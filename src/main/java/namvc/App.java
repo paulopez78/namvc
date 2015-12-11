@@ -1,10 +1,10 @@
-package main.java.namvc;
+package namvc;
 
-import main.java.namvc.framework.NaMvcApp;
-import main.java.namvc.controllers.HomeController;
-import main.java.namvc.controllers.LogoutController;
-import main.java.namvc.controllers.PageController;
-import main.java.namvc.controllers.LoginController;
+import namvc.framework.NaMvcApp;
+import namvc.controllers.HomeController;
+import namvc.controllers.LogoutController;
+import namvc.controllers.PageController;
+import namvc.controllers.LoginController;
 
 public class App {
   public static void main(String[] args) throws Exception {

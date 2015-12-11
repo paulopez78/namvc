@@ -1,11 +1,11 @@
-package main.java.namvc.controllers;
+package namvc.controllers;
 
-import main.java.namvc.framework.httpactions.NaMvcAction;
-import main.java.namvc.framework.NaMvcContext;
-import main.java.namvc.framework.NaMvcController;
-import main.java.namvc.framework.NaMvcHttpContext;
-import main.java.namvc.framework.httpactions.RenderAction;
-import main.java.namvc.framework.httpactions.SetSessionAction;
+import namvc.framework.httpactions.NaMvcAction;
+import namvc.framework.NaMvcContext;
+import namvc.framework.NaMvcController;
+import namvc.framework.NaMvcHttpContext;
+import namvc.framework.httpactions.RenderAction;
+import namvc.framework.httpactions.SetSessionAction;
 
 public class LogoutController extends NaMvcController {
 

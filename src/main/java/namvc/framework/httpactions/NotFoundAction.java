@@ -1,6 +1,4 @@
-package main.java.namvc.framework.httpactions;
-
-import main.java.namvc.framework.httpactions.RenderAction;
+package namvc.framework.httpactions;
 
 import java.net.HttpURLConnection;
 

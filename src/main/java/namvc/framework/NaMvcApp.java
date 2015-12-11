@@ -1,8 +1,8 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import main.java.namvc.Users;
+import namvc.Users;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

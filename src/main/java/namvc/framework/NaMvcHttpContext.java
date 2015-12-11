@@ -1,4 +1,4 @@
-package main.java.namvc.framework;
+package namvc.framework;
 
 import java.util.Map;
 

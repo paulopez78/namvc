@@ -1,6 +1,6 @@
-package main.java.namvc;
+package namvc;
 
-import main.java.namvc.framework.NaMvcPrincipal;
+import namvc.framework.NaMvcPrincipal;
 
 import java.util.Map;
 import java.util.List;
