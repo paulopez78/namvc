@@ -5,8 +5,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
+import namvc.framework.httpcontext.NaMvcHttpResponse;
 
 public class RedirectAction extends NaMvcAction {
     private String path;
@@ -17,13 +16,10 @@ public class RedirectAction extends NaMvcAction {
     }
 
     @Override
-    public void execute(HttpExchange t) throws IOException
-    {
-      Headers respHeaders = t.getResponseHeaders();
-      List<String> values = new ArrayList<>();
-      values.add(this.path);
-      respHeaders.put("Location", values);
-      t.sendResponseHeaders(HttpURLConnection.HTTP_MOVED_PERM, -1);
-      t.close();
+    public void execute(NaMvcHttpResponse response) throws IOException {
+        List<String> values = new ArrayList<>();
+        values.add(this.path);
+        response.addHeader("Location", values);
+        response.sendHttpCode(HttpURLConnection.HTTP_MOVED_PERM, -1);
     }
   }

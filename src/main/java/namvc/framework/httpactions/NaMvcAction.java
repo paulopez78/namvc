@@ -1,10 +1,10 @@
 package namvc.framework.httpactions;
 
-import com.sun.net.httpserver.HttpExchange;
+import namvc.framework.httpcontext.NaMvcHttpResponse;
 
 import java.io.IOException;
 
 public abstract class NaMvcAction
 {
-  public abstract void execute(HttpExchange t) throws IOException;
+  public abstract void execute(NaMvcHttpResponse response) throws IOException;
 }

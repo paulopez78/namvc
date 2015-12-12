@@ -1,41 +1,47 @@
 package namvc.controllers;
 
-import namvc.framework.NaMvcContext;
-import namvc.framework.NaMvcController;
+import namvc.Users;
+import namvc.framework.*;
 import namvc.framework.httpactions.NaMvcAction;
-import namvc.framework.NaMvcHttpContext;
-import namvc.framework.NaMvcPrincipal;
+import namvc.framework.httpactions.RedirectAction;
 import namvc.framework.httpactions.RenderAction;
 import namvc.framework.httpactions.SetSessionAction;
+import namvc.framework.httpcontext.NaMvcHttpContext;
+import namvc.framework.httpcontext.NaMvcHttpSession;
 import namvc.views.LoginView;
 
 public class LoginController extends NaMvcController {
-  public LoginController()
+  private final Users users;
+
+  public LoginController(Users users)
   {
     this.View = new LoginView();
+    this.users = users;
   }
 
   @Override
-  public NaMvcAction postAction(NaMvcContext context, NaMvcHttpContext httpContext)
+  public NaMvcAction postAction(NaMvcHttpSession session, NaMvcHttpContext httpContext)
   {
     try
     {
-      String login = httpContext.getParameters().get("login").toString();
-      String password = httpContext.getParameters().get("password").toString();
+      String login = httpContext.getRequest().getParameters().get("login");
+      String password = httpContext.getRequest().getParameters().get("password");
 
-      NaMvcPrincipal principal = context.getUsers().authenticate(login, password);
-      String sessionId = context.getSession().create(principal);
+      NaMvcPrincipal principal = users.authenticate(login, password);
+      String sessionId = session.create(principal);
 
       String redirectUrl = "/";
-      if (httpContext.getParameters().containsKey("redirectUrl"))
+      if (httpContext.getRequest().getParameters().containsKey("redirectUrl"))
       {
-        redirectUrl = httpContext.getParameters().get("redirectUrl").toString();
+        redirectUrl = httpContext.getRequest().getParameters().get("redirectUrl");
       }
 
-      //redirect
-      return new SetSessionAction(sessionId, context.getSession().COOKIE_NAME,
-              context.getSession().getTimeout(), redirectUrl);
-
+      NaMvcAction setSessionAction = new SetSessionAction(
+              sessionId,
+              session.getCookieName(),
+              session.getTimeout());
+      setSessionAction.execute(httpContext.getResponse());
+      return new RedirectAction(redirectUrl);
     }
     catch(Exception ex)
     {

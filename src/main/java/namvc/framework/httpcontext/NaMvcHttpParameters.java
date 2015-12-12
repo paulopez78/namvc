@@ -1,57 +1,27 @@
-package namvc.framework;
+package namvc.framework.httpcontext;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.net.URLDecoder;
-import java.net.URI;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.Filter;
+public class NaMvcHttpParameters {
+    Map<String, Object> parameters = new HashMap<>();
 
-// https://leonardom.wordpress.com/2009/08/06/getting-parameters-from-httpexchange/
-public class NaMvcParameterFilter extends Filter {
-    @Override
-    public String description() {
-        return "Parses the requested URI for parameters";
+    public NaMvcHttpParameters(String queryString, String postString) throws UnsupportedEncodingException {
+        this.parseQuery(queryString, parameters);
+        this.parseQuery(postString, parameters);
     }
 
-    @Override
-    public void doFilter(HttpExchange exchange, Chain chain)
-        throws IOException {
-        parseGetParameters(exchange);
-        parsePostParameters(exchange);
-        chain.doFilter(exchange);
+    public String get(String key){
+        return parameters.get(key).toString();
     }
 
-    private void parseGetParameters(HttpExchange exchange)
-        throws UnsupportedEncodingException {
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        URI requestedUri = exchange.getRequestURI();
-        String query = requestedUri.getRawQuery();
-        parseQuery(query, parameters);
-        exchange.setAttribute("parameters", parameters);
-    }
-
-    private void parsePostParameters(HttpExchange exchange)
-        throws IOException {
-
-        if ("post".equalsIgnoreCase(exchange.getRequestMethod())) {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> parameters =
-                (Map<String, Object>)exchange.getAttribute("parameters");
-            InputStreamReader isr =
-                new InputStreamReader(exchange.getRequestBody(),"utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String query = br.readLine();
-            parseQuery(query, parameters);
-        }
+    public boolean containsKey(String key)
+    {
+        return parameters.containsKey(key);
     }
 
      @SuppressWarnings("unchecked")

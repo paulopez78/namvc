@@ -1,7 +1,5 @@
-package namvc;
+package namvc.framework;
 
-import namvc.framework.NaMvcHttpSession;
-import namvc.framework.NaMvcPrincipal;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -33,6 +31,18 @@ public class NaMvcPrincipalTest {
 
         //Assert
         assertFalse(result);
+    }
+
+    @Test
+    public void getUserNameTest() {
+        //Arrange
+        NaMvcPrincipal test = createPrincipal();
+
+        //Act
+        String result = test.getUserName();
+
+        //Assert
+        assertEquals(result, "user1");
     }
 
     private NaMvcPrincipal createPrincipal()

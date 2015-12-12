@@ -1,9 +1,8 @@
 package namvc.framework.httpactions;
 
-import com.sun.net.httpserver.HttpExchange;
+import namvc.framework.httpcontext.NaMvcHttpResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
 public class RenderAction extends NaMvcAction {
@@ -22,10 +21,8 @@ public class RenderAction extends NaMvcAction {
     }
 
     @Override
-    public void execute(HttpExchange t) throws IOException {
-        t.sendResponseHeaders(this.httpCode, html.length());
-        OutputStream os = t.getResponseBody();
-        os.write(html.getBytes());
-        os.close();
+    public void execute(NaMvcHttpResponse response) throws IOException {
+        response.sendHttpCode(this.httpCode, html.length());
+        response.write(html);
     }
 }

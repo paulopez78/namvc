@@ -1,18 +1,24 @@
-package namvc.framework;
+package namvc.framework.httpcontext;
+
+import namvc.framework.NaMvcPrincipal;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class NaMvcHttpSession {
-    private int timeout;
-    private Map<String, NaMvcPrincipal> sessions;
-    public static final String COOKIE_NAME = "NAMVCSESSIONID";
+    private final int timeout;
+    private final Map<String, NaMvcPrincipal> sessions;
+    private final String COOKIE_NAME = "NAMVCSESSIONID";
 
     public NaMvcHttpSession(int timeout)
     {
       this.timeout = timeout;
       this.sessions = new HashMap<>();
+    }
+
+    public String getCookieName(){
+        return COOKIE_NAME;
     }
 
     public int getTimeout() { return this.timeout;}

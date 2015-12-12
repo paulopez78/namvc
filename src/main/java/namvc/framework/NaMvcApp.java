@@ -2,32 +2,22 @@ package namvc.framework;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import namvc.Users;
-
+import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.framework.httpmodules.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /*
  * a simple mvc application based on simple HttpServer
 */
-public class NaMvcApp implements NaMvcContext {
-  private HttpServer server;
-  private NaMvcHttpSession session;
-  private Users users;
+public class NaMvcApp {
+  private final HttpServer server;
+  private final NaMvcHttpSession session;
 
   public NaMvcApp(int port, int sessionTimeOut) throws IOException
   {
     this.server = HttpServer.create(new InetSocketAddress(port), 0);
     this.session = new NaMvcHttpSession(sessionTimeOut);
-    this.users = new Users();
-  }
-
-  public NaMvcHttpSession getSession(){
-    return this.session;
-  }
-
-  public Users getUsers(){
-    return this.users;
   }
 
   public void route(String path, NaMvcController controller)
@@ -37,17 +27,20 @@ public class NaMvcApp implements NaMvcContext {
 
   public void route(String path, NaMvcController controller, String authorizationRole)
   {
-    HttpContext context = server.createContext(path, new NaMvcHttpHandler(this, controller));
+    NaMvcHttpMethodModule httpModule = new NaMvcHttpMethodModule(session, controller);
+    NaMvcStaticFilesModule staticFilesModule = new NaMvcStaticFilesModule();
+    NaMvcAuthenticationModule authenticationModule = new NaMvcAuthenticationModule(session);
+    NaMvcAuthorizationModule authorizationModule = new NaMvcAuthorizationModule(authorizationRole);
 
-    context.getFilters().add(new NaMvcStaticFilesFilter());
-    context.getFilters().add(new NaMvcParameterFilter());
+    HttpContext context = server.createContext(path, new NaMvcFilter(httpModule));
+    context.getFilters().add(new NaMvcFilter(staticFilesModule));
 
-    if (!authorizationRole.equals(""))
+    if (!anonymous(authorizationRole))
     {
-      context.getFilters().add(new NaMvcAuthenticationFilter(this));
-      if (!authorizationRole.equals("Any"))
+      context.getFilters().add(new NaMvcFilter(authenticationModule));
+      if (authorizationRequired(authorizationRole))
       {
-        context.getFilters().add(new NaMvcAuthorizationFilter(this, authorizationRole));
+        context.getFilters().add(new NaMvcFilter(authorizationModule));
       }
     }
   }
@@ -57,7 +50,14 @@ public class NaMvcApp implements NaMvcContext {
     server.setExecutor(null); // creates a default executor
     server.start();
 
-    this.users.create();
     System.out.println("Listening on port " + this.server.getAddress().toString());
+  }
+
+  private boolean anonymous(String authorizationRole){
+    return authorizationRole.equals("");
+  }
+
+  private boolean authorizationRequired(String authorizationRole){
+    return !authorizationRole.equals("Any");
   }
 }
