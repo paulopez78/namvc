@@ -15,8 +15,6 @@ public class NaMvcHttpContext {
   public NaMvcHttpContext(HttpExchange exchange) throws IOException {
     this.request = new NaMvcHttpRequest(exchange);
     this.response = new NaMvcHttpResponse(exchange);
-    this.principal = (NaMvcPrincipal) exchange.getAttribute("principal");
-    this.sessionId = (String) exchange.getAttribute("sessionId");
   }
 
   public NaMvcHttpRequest getRequest()

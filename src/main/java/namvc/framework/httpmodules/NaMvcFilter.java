@@ -31,13 +31,14 @@ public class NaMvcFilter extends Filter implements HttpHandler{
 
     public void handle(HttpExchange exchange) throws IOException {
         executeModule(exchange);
+        setHttpContext(exchange, null);
     }
 
-    private boolean executeModule(HttpExchange exchange) throws IOException {
-        NaMvcHttpContext httpContext = getHttpContext(exchange);
+    private boolean executeModule(HttpExchange exchange) {
         boolean result = false;
         try
         {
+            NaMvcHttpContext httpContext = getHttpContext(exchange);
             result = module.execute(httpContext);
         }
         catch (IOException ex)
@@ -51,15 +52,19 @@ public class NaMvcFilter extends Filter implements HttpHandler{
     }
 
     private NaMvcHttpContext getHttpContext(HttpExchange exchange) throws IOException {
+        String key = "namvcHttpContext";
+        if (exchange.getAttribute(key) == null)
+        {
+            exchange.setAttribute(key, new NaMvcHttpContext(exchange));
+        }
 
-        return new NaMvcHttpContext(exchange);
-        //String key = "namvcHttpContext";
-        //if (exchange.getAttribute(key) == null)
-        //{
-        //    exchange.setAttribute(key, new NaMvcHttpContext(exchange));
-        //}
+        return (NaMvcHttpContext)exchange.getAttribute(key);
+    }
 
-        //return (NaMvcHttpContext)exchange.getAttribute(key);
+    private void setHttpContext(HttpExchange exchange, NaMvcHttpContext context)
+    {
+        String key = "namvcHttpContext";
+        exchange.setAttribute(key, context);
     }
 }
 
