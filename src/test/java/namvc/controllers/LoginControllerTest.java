@@ -4,9 +4,12 @@ import namvc.Users;
 import namvc.framework.NaMvcPrincipal;
 import namvc.framework.httpactions.NaMvcAction;
 import namvc.framework.httpcontext.NaMvcHttpContext;
+import namvc.framework.httpcontext.NaMvcHttpParameters;
+import namvc.framework.httpcontext.NaMvcHttpRequest;
 import namvc.framework.httpcontext.NaMvcHttpSession;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +19,9 @@ import static org.mockito.Mockito.*;
 
 public class LoginControllerTest {
     @Test
-    public void postActionTest() throws Exception {
+    public void postActionCreatesNewSessionTest() throws Exception {
         //Arrange
-        Users mockUsers = mockUsers();
+        Users mockUsers = mockUsers(false);
         NaMvcHttpSession mockSession = mockSession();
         NaMvcHttpContext mockContext = mockContext();
         LoginController test = new LoginController(mockUsers);
@@ -27,34 +30,71 @@ public class LoginControllerTest {
         NaMvcAction result = test.postAction(mockSession, mockContext);
 
         //Assert
-        //verify(mockUsers).authenticate(anyString(),anyString());
+        verify(mockSession).create(any(NaMvcPrincipal.class));
+        verify(mockUsers).authenticate(anyString(),anyString());
+        assertNotNull(result);
+    }
+
+    @Test(expected=Exception.class)
+    public void postActionThrowsExceptionTest() throws Exception {
+        //Arrange
+        Users mockUsers = mockUsers(true);
+        NaMvcHttpSession mockSession = mockSession();
+        NaMvcHttpContext mockContext = mockContext();
+        LoginController test = new LoginController(mockUsers);
+
+        //Act
+        NaMvcAction result = test.postAction(mockSession, mockContext);
+
+        //Assert
+        verify(mockUsers).authenticate(anyString(),anyString());
         assertNotNull(result);
     }
 
     private NaMvcHttpSession mockSession()
     {
         NaMvcHttpSession session = mock(NaMvcHttpSession.class);
-
         return session;
     }
 
-    private NaMvcHttpContext mockContext()
-    {
+    private NaMvcHttpContext mockContext() throws UnsupportedEncodingException {
         NaMvcHttpContext context = mock(NaMvcHttpContext.class);
+        NaMvcHttpRequest request = createRequest();
+        when(context.getRequest()).thenReturn(request);
         return context;
     }
 
-    private Users mockUsers() throws Exception {
+    private NaMvcHttpRequest createRequest() throws UnsupportedEncodingException {
+        NaMvcHttpRequest request = mock(NaMvcHttpRequest.class);
+        when(request.getParameters()).thenReturn(createParameters());
+        return request;
+    }
+
+    private Users mockUsers(boolean throwException) throws Exception {
         Users users = mock(Users.class);
-        when(users.authenticate(anyString(),anyString())).thenReturn(createPrincipal());
+
+        if (throwException)
+        {
+            doThrow(Exception.class).when(users.authenticate(anyString(),anyString()));
+        }
+        else
+        {
+            when(users.authenticate(anyString(),anyString())).thenReturn(createPrincipal());
+        }
         return users;
+    }
+
+    private NaMvcHttpParameters createParameters() throws UnsupportedEncodingException {
+        String queryString = "";
+        String postString= "login=user1&password=password";
+        NaMvcHttpParameters params = new NaMvcHttpParameters(queryString, postString);
+        return params;
     }
 
     private NaMvcPrincipal createPrincipal()
     {
         List<String> roles = new ArrayList<>();
         roles.add("Role1");
-
         return new NaMvcPrincipal("test",roles);
     }
 }

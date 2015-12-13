@@ -26,7 +26,7 @@ public class LogoutController extends NaMvcController {
     }
     catch(Exception ex)
     {
-      return new RenderAction(View.render("Login error"));
+      return new RenderAction(View.render("Logout error"));
     }
   }
 }

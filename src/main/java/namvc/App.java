@@ -9,7 +9,7 @@ import namvc.controllers.LoginController;
 public class App {
   public static void main(String[] args) throws Exception {
 
-    NaMvcApp app = new NaMvcApp(8000, 30);
+    NaMvcApp app = new NaMvcApp(8000, 300);
     Users users = new Users();
     users.create();
 

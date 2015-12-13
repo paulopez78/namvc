@@ -16,12 +16,16 @@ public class NaMvcAuthorizationModuleTest {
     @Test
     public void allowedRoleTest() throws IOException {
         boolean result = executeAuthorization("Role1", "Role1");
+
+        //Assert
         assertTrue(result);
     }
 
     @Test
     public void notAllowedRoleTest() throws IOException {
         boolean result = executeAuthorization("Role1", "RoleX");
+
+        //Assert
         assertFalse(result);
     }
 
