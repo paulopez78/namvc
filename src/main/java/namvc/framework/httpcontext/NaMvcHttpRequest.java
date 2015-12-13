@@ -57,6 +57,13 @@ public class NaMvcHttpRequest {
         return cookie;
     }
 
+
+    @Override
+    public String toString()
+    {
+        return getMethod() + " " + getPath();
+    }
+
     private String parseCookie(String cookie)
     {
         String value = "";

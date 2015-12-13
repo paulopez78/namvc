@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.net.URLDecoder;
 
 public class NaMvcHttpParameters {
-    Map<String, Object> parameters = new HashMap<>();
+    private final Map<String, Object> parameters = new HashMap<>();
 
     public NaMvcHttpParameters(String queryString, String postString) throws UnsupportedEncodingException {
         this.parseQuery(queryString, parameters);
