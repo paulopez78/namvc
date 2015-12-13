@@ -33,7 +33,7 @@ public class NaMvcApp {
     NaMvcAuthorizationModule authorizationModule = new NaMvcAuthorizationModule(authorizationRole);
 
     HttpContext context = server.createContext(path, new NaMvcFilter(httpModule));
-    context.getFilters().add(new NaMvcFilter(staticFilesModule));
+    context.getFilters().add(new NaMvcFilter(staticFilesModule, true));
 
     if (!anonymous(authorizationRole))
     {
@@ -47,7 +47,7 @@ public class NaMvcApp {
 
   public void start ()
   {
-    server.setExecutor(null); // creates a default executor
+    server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
     server.start();
 
     System.out.println("Listening on port " + this.server.getAddress().toString());

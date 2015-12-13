@@ -20,6 +20,6 @@ public class RedirectAction extends NaMvcAction {
         List<String> values = new ArrayList<>();
         values.add(this.path);
         response.addHeader("Location", values);
-        response.sendHttpCode(HttpURLConnection.HTTP_MOVED_PERM, -1);
+        response.sendHttpCode(HttpURLConnection.HTTP_MOVED_PERM,-1);
     }
   }

@@ -10,10 +10,17 @@ import java.io.IOException;
 public class NaMvcFilter extends Filter implements HttpHandler{
 
     private final NaMvcModule module;
+    private final boolean bootstrap;
+
+    public NaMvcFilter(NaMvcModule module, boolean bootstrap)
+    {
+        this.module = module;
+        this.bootstrap = bootstrap;
+    }
 
     public NaMvcFilter(NaMvcModule module)
     {
-        this.module = module;
+        this(module, false);
     }
 
     @Override
@@ -31,7 +38,6 @@ public class NaMvcFilter extends Filter implements HttpHandler{
 
     public void handle(HttpExchange exchange) throws IOException {
         executeModule(exchange);
-        setHttpContext(exchange, null);
     }
 
     private boolean executeModule(HttpExchange exchange) {
@@ -53,18 +59,13 @@ public class NaMvcFilter extends Filter implements HttpHandler{
 
     private NaMvcHttpContext getHttpContext(HttpExchange exchange) throws IOException {
         String key = "namvcHttpContext";
-        if (exchange.getAttribute(key) == null)
+
+        if (bootstrap)
         {
             exchange.setAttribute(key, new NaMvcHttpContext(exchange));
         }
 
         return (NaMvcHttpContext)exchange.getAttribute(key);
-    }
-
-    private void setHttpContext(HttpExchange exchange, NaMvcHttpContext context)
-    {
-        String key = "namvcHttpContext";
-        exchange.setAttribute(key, context);
     }
 }
 
