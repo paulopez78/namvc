@@ -1,4 +1,4 @@
-package namvc;
+package namvc.repositories;
 
 import namvc.framework.NaMvcPrincipal;
 
@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Users {
+public class UsersInMemoryRepository implements UsersRepository
+{
   private Map<String,List<String>> userRoles;
 
   private Map<String,String> userPasswords;
 
+  @Override
   public void create()
   {
     //TODO: read from a file
@@ -49,6 +51,7 @@ public class Users {
     };
   }
 
+  @Override
   public NaMvcPrincipal authenticate(String user, String password) throws Exception {
     boolean authenticated = userPasswords.get(user).equals(applyHash(password));
 

@@ -1,6 +1,5 @@
 package namvc.controllers;
 
-import namvc.Users;
 import namvc.framework.*;
 import namvc.framework.httpactions.NaMvcAction;
 import namvc.framework.httpactions.RedirectAction;
@@ -8,15 +7,14 @@ import namvc.framework.httpactions.RenderAction;
 import namvc.framework.httpactions.SetSessionAction;
 import namvc.framework.httpcontext.NaMvcHttpContext;
 import namvc.framework.httpcontext.NaMvcHttpSession;
-import namvc.views.LoginView;
+import namvc.repositories.UsersRepository;
 
 public class LoginController extends NaMvcController {
-  private final Users users;
+  private final UsersRepository usersRepository;
 
-  public LoginController(Users users)
+  public LoginController(UsersRepository usersRepository)
   {
-    this.View = new LoginView();
-    this.users = users;
+    this.usersRepository = usersRepository;
   }
 
   @Override
@@ -27,7 +25,7 @@ public class LoginController extends NaMvcController {
       String login = httpContext.getRequest().getParameters().get("login");
       String password = httpContext.getRequest().getParameters().get("password");
 
-      NaMvcPrincipal principal = users.authenticate(login, password);
+      NaMvcPrincipal principal = usersRepository.authenticate(login, password);
       String sessionId = session.create(principal);
 
       String redirectUrl = "/";

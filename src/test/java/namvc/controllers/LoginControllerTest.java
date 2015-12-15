@@ -1,12 +1,12 @@
 package namvc.controllers;
 
-import namvc.Users;
 import namvc.framework.NaMvcPrincipal;
 import namvc.framework.httpactions.NaMvcAction;
 import namvc.framework.httpcontext.NaMvcHttpContext;
 import namvc.framework.httpcontext.NaMvcHttpParameters;
 import namvc.framework.httpcontext.NaMvcHttpRequest;
 import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.repositories.UsersRepository;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -21,7 +21,7 @@ public class LoginControllerTest {
     @Test
     public void postActionCreatesNewSessionTest() throws Exception {
         //Arrange
-        Users mockUsers = mockUsers(false);
+        UsersRepository mockUsers = mockUsers(false);
         NaMvcHttpSession mockSession = mockSession();
         NaMvcHttpContext mockContext = mockContext();
         LoginController test = new LoginController(mockUsers);
@@ -38,7 +38,7 @@ public class LoginControllerTest {
     @Test(expected=Exception.class)
     public void postActionThrowsExceptionTest() throws Exception {
         //Arrange
-        Users mockUsers = mockUsers(true);
+        UsersRepository mockUsers = mockUsers(true);
         NaMvcHttpSession mockSession = mockSession();
         NaMvcHttpContext mockContext = mockContext();
         LoginController test = new LoginController(mockUsers);
@@ -70,8 +70,8 @@ public class LoginControllerTest {
         return request;
     }
 
-    private Users mockUsers(boolean throwException) throws Exception {
-        Users users = mock(Users.class);
+    private UsersRepository mockUsers(boolean throwException) throws Exception {
+        UsersRepository users = mock(UsersRepository.class);
 
         if (throwException)
         {

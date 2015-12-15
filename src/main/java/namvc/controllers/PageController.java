@@ -6,14 +6,8 @@ import namvc.framework.NaMvcController;
 import namvc.framework.httpcontext.NaMvcHttpContext;
 import namvc.framework.httpactions.RenderAction;
 import namvc.models.PageModel;
-import namvc.views.PageView;
 
 public class PageController extends NaMvcController {
-  public PageController()
-  {
-    this.View = new PageView();
-  }
-
   @Override
   public NaMvcAction getAction(NaMvcHttpSession session, NaMvcHttpContext httpContext)
   {
