@@ -43,4 +43,8 @@ public class NaMvcHttpContext {
   public void setSessionId(String sessionId) {
     this.sessionId = sessionId;
   }
+
+  public boolean authenticated() {
+    return getPrincipal() != null;
+  }
 }

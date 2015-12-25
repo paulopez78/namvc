@@ -2,6 +2,7 @@ package namvc.framework.httpmodules;
 
 import namvc.framework.*;
 import namvc.framework.httpactions.NaMvcAction;
+import namvc.framework.httpactions.SetSessionInfo;
 import namvc.framework.httpcontext.NaMvcHttpContext;
 import namvc.framework.httpcontext.NaMvcHttpSession;
 
@@ -20,7 +21,6 @@ public class NaMvcHttpMethodModule implements NaMvcModule {
         System.out.println(httpContext.getRequest().toString());
 
         String requestMethod = httpContext.getRequest().getMethod();
-
         NaMvcAction responseAction = null;
 
         if (requestMethod.equals("GET")) {
@@ -35,7 +35,21 @@ public class NaMvcHttpMethodModule implements NaMvcModule {
             throw new IOException("There is no response action for Method" + requestMethod);
         }
 
-        responseAction.execute(httpContext.getResponse());
+        responseAction.execute(httpContext.getResponse(), createSessionInfo(httpContext));
         return true;
+    }
+
+    private SetSessionInfo createSessionInfo(NaMvcHttpContext httpContext) {
+        String cookieName = session.getCookieName();
+        if (httpContext.authenticated())
+        {
+            int timeout = session.getTimeout();
+            String sessionId = httpContext.getSessionId();
+            return new SetSessionInfo(sessionId, cookieName, timeout);
+        }
+        else
+        {
+            return new SetSessionInfo(cookieName);
+        }
     }
 }

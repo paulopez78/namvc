@@ -5,7 +5,6 @@ import namvc.framework.httpcontext.NaMvcHttpSession;
 import namvc.framework.NaMvcPrincipal;
 import namvc.framework.httpactions.NaMvcAction;
 import namvc.framework.httpactions.RedirectAction;
-import namvc.framework.httpactions.SetSessionAction;
 
 import java.io.IOException;
 
@@ -34,9 +33,6 @@ public class NaMvcAuthenticationModule implements NaMvcModule {
             NaMvcPrincipal currentPrincipal = session.getPrincipal(sessionId);
             httpContext.setPrincipal(currentPrincipal);
             httpContext.setSessionId(sessionId);
-
-            SetSessionAction setSessionAction = new SetSessionAction(sessionId, cookieName, session.getTimeout());
-            setSessionAction.execute(httpContext.getResponse());
             return true;
         }
     }
