@@ -6,6 +6,7 @@ import namvc.framework.httpactions.RedirectAction;
 import namvc.framework.httpactions.RenderAction;
 import namvc.framework.httpcontext.NaMvcHttpContext;
 import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.models.LoginModel;
 import namvc.repositories.UsersRepository;
 
 public class LoginController extends NaMvcController {
@@ -17,8 +18,17 @@ public class LoginController extends NaMvcController {
   }
 
   @Override
+  public NaMvcAction getAction(NaMvcHttpSession session, NaMvcHttpContext httpContext)
+  {
+    LoginModel model = new LoginModel(getRedirectUrl(httpContext));
+    return new RenderAction(View.render(model));
+  }
+
+  @Override
   public NaMvcAction postAction(NaMvcHttpSession session, NaMvcHttpContext httpContext)
   {
+    String redirectUrl = getRedirectUrl(httpContext);
+
     try
     {
       String login = httpContext.getRequest().getParameters().get("login");
@@ -26,16 +36,15 @@ public class LoginController extends NaMvcController {
 
       NaMvcPrincipal principal = usersRepository.authenticate(login, password);
       String sessionId = session.create(principal);
-
       httpContext.setSessionId(sessionId);
       httpContext.setPrincipal(principal);
 
-      String redirectUrl = getRedirectUrl(httpContext);
       return new RedirectAction(redirectUrl);
     }
     catch(Exception ex)
     {
-      return new RenderAction(View.render("Login error"));
+      LoginModel model = new LoginModel(redirectUrl, "Login error");
+      return new RenderAction(View.render(model));
     }
   }
 

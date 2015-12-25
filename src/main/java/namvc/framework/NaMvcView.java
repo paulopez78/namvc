@@ -26,6 +26,11 @@ public abstract class NaMvcView
     }
   }
 
+  protected String hidden(String id, String value)
+  {
+    return "<input type='hidden' name='"+ id +"' value= '"+ value +"'></input>";
+  }
+
   protected String submit(String content)
   {
     return "<button>"+ content + "</button>";
