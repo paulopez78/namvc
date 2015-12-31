@@ -36,7 +36,11 @@ public class NaMvcAuthorizationModuleTest {
         NaMvcHttpContext contextMock = createContext(principal);
 
         //Act
-        return test.execute(contextMock);
+        boolean result =test.execute(contextMock);
+
+        //Assert
+        verify(contextMock).getPrincipal();
+        return result;
     }
 
     private NaMvcHttpContext createContext(NaMvcPrincipal principal) throws IOException {

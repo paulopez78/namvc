@@ -15,10 +15,10 @@ public class NaMvcHttpSessionTest {
         NaMvcPrincipal principal = createPrincipal();
 
         //Act
-        test.create(principal);
+        String result = test.create(principal);
 
         //Assert
-        //assertEquals(principal.getUserName(), test.getPrincipal(sessionId).getUserName());
+        assertEquals(principal.getUserName(), test.getPrincipal(result).getUserName());
     }
 
     @Test

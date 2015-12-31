@@ -1,9 +1,9 @@
 package namvc.controllers;
 
 import namvc.framework.httpactions.NaMvcAction;
-import namvc.framework.httpcontext.NaMvcHttpContext;
-import namvc.framework.httpcontext.NaMvcHttpResponse;
-import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.framework.httpactions.RedirectAction;
+import namvc.framework.httpcontext.MvcHttpContext;
+import namvc.framework.httpcontext.MvcHttpResponse;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,39 +14,21 @@ import static org.mockito.Mockito.*;
 
 public class LogoutControllerTest {
     @Test
-    public void postActionKillsSessionTest() throws Exception {
+    public void postActionLogOutTest() throws Exception {
         //Arrange
-        NaMvcHttpSession mockSession = mockSession();
-        NaMvcHttpContext mockContext = mockContext();
+        MvcHttpContext mockContext = mockContext();
         LogoutController test = new LogoutController();
 
         //Act
         NaMvcAction result = test.postAction(mockContext);
 
         //Assert
-        verify(mockSession).kill(anyString());
-        assertNotNull(result);
+        verify(mockContext).logout();
+        assertTrue(result instanceof RedirectAction);
     }
 
-    private NaMvcHttpSession mockSession()
-    {
-        NaMvcHttpSession session = mock(NaMvcHttpSession.class);
-        //when(session.getTimeout()).thenReturn(1);
-        return session;
-    }
-
-    private NaMvcHttpContext mockContext() throws IOException {
-        NaMvcHttpResponse response = createResponse();
-        NaMvcHttpContext context = mock(NaMvcHttpContext.class);
-        when(context.getResponse()).thenReturn(response);
-        //when(context.getSessionId()).thenReturn("1");
+    private MvcHttpContext mockContext() throws IOException {
+        MvcHttpContext context = mock(MvcHttpContext.class);
         return context;
-    }
-
-    private NaMvcHttpResponse createResponse() throws IOException {
-        NaMvcHttpResponse response = mock(NaMvcHttpResponse.class);
-        doNothing().when(response).addHeader(anyString(), anyList());
-        doNothing().when(response).sendHttpCode(anyInt(), anyInt());
-        return response;
     }
 }
