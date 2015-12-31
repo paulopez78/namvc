@@ -21,7 +21,7 @@ public class LogoutControllerTest {
         LogoutController test = new LogoutController();
 
         //Act
-        NaMvcAction result = test.postAction(mockSession, mockContext);
+        NaMvcAction result = test.postAction(mockContext);
 
         //Assert
         verify(mockSession).kill(anyString());
@@ -31,8 +31,7 @@ public class LogoutControllerTest {
     private NaMvcHttpSession mockSession()
     {
         NaMvcHttpSession session = mock(NaMvcHttpSession.class);
-        when(session.getTimeout()).thenReturn(1);
-        when(session.getCookieName()).thenReturn("test");
+        //when(session.getTimeout()).thenReturn(1);
         return session;
     }
 
@@ -40,7 +39,7 @@ public class LogoutControllerTest {
         NaMvcHttpResponse response = createResponse();
         NaMvcHttpContext context = mock(NaMvcHttpContext.class);
         when(context.getResponse()).thenReturn(response);
-        when(context.getSessionId()).thenReturn("1");
+        //when(context.getSessionId()).thenReturn("1");
         return context;
     }
 

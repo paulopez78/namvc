@@ -3,48 +3,59 @@ package namvc.framework.httpcontext;
 import com.sun.net.httpserver.HttpExchange;
 import namvc.framework.NaMvcPrincipal;
 
-import java.io.IOException;
-
-public class NaMvcHttpContext {
-  private NaMvcPrincipal principal;
+public class NaMvcHttpContext implements MvcHttpContext{
+  private final MvcHttpSession session;
+  private final MvcHttpRequest request;
+  private final MvcHttpResponse response;
   private String sessionId;
 
-  private NaMvcHttpRequest request;
-  private NaMvcHttpResponse response;
-
-  public NaMvcHttpContext(HttpExchange exchange) throws IOException {
+  public NaMvcHttpContext(HttpExchange exchange, MvcHttpSession session) {
     this.request = new NaMvcHttpRequest(exchange);
     this.response = new NaMvcHttpResponse(exchange);
+    this.session = session;
+    this.sessionId = "";
   }
 
-  public NaMvcHttpRequest getRequest()
+  public MvcHttpRequest getRequest()
   {
     return this.request;
   }
 
-  public NaMvcHttpResponse getResponse()
+  public MvcHttpResponse getResponse()
   {
     return this.response;
   }
 
   public NaMvcPrincipal getPrincipal()
   {
-    return this.principal;
+    return this.session.getPrincipal(getSessionId());
   }
 
-  public String getSessionId() {
-    return sessionId;
+  public SessionInfo getSessionInfo(){
+    return this.session.getSessionInfo(getSessionId());
   }
 
-  public void setPrincipal(NaMvcPrincipal principal) {
-    this.principal = principal;
+  public void login(NaMvcPrincipal currentPrincipal) {
+    this.sessionId = session.create(currentPrincipal);
   }
 
-  public void setSessionId(String sessionId) {
-    this.sessionId = sessionId;
+  public void logout() {
+    session.kill(getSessionId());
   }
 
   public boolean authenticated() {
-    return getPrincipal() != null;
+    return !getSessionId().equals("");
+  }
+
+  private String getSessionId()
+  {
+    if (sessionId.equals(""))
+    {
+      return this.request.getCookieValue(SessionInfo.COOKIE_NAME);
+    }
+    else
+    {
+      return this.sessionId;
+    }
   }
 }

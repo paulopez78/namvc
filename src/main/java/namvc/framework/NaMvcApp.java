@@ -2,6 +2,7 @@ package namvc.framework;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import namvc.framework.httpcontext.MvcHttpSession;
 import namvc.framework.httpcontext.NaMvcHttpSession;
 import namvc.framework.httpmodules.*;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.net.InetSocketAddress;
 */
 public class NaMvcApp {
   private final HttpServer server;
-  private final NaMvcHttpSession session;
+  private final MvcHttpSession session;
 
   public NaMvcApp(int port, int sessionTimeOut) throws IOException
   {
@@ -27,20 +28,20 @@ public class NaMvcApp {
 
   public void route(String path, NaMvcController controller, String authorizationRole)
   {
-    NaMvcHttpMethodModule httpModule = new NaMvcHttpMethodModule(session, controller);
-    NaMvcStaticFilesModule staticFilesModule = new NaMvcStaticFilesModule();
-    NaMvcAuthenticationModule authenticationModule = new NaMvcAuthenticationModule(session);
-    NaMvcAuthorizationModule authorizationModule = new NaMvcAuthorizationModule(authorizationRole);
+    NaMvcModule httpModule = new NaMvcHttpMethodModule(controller);
+    NaMvcModule staticFilesModule = new NaMvcStaticFilesModule();
+    NaMvcModule authenticationModule = new NaMvcAuthenticationModule();
+    NaMvcModule authorizationModule = new NaMvcAuthorizationModule(authorizationRole);
 
-    HttpContext context = server.createContext(path, new NaMvcFilter(httpModule));
-    context.getFilters().add(new NaMvcFilter(staticFilesModule, true));
+    HttpContext context = server.createContext(path, createFilter(httpModule));
+    context.getFilters().add(createBootStrapFilter(staticFilesModule));
 
     if (!anonymous(authorizationRole))
     {
-      context.getFilters().add(new NaMvcFilter(authenticationModule));
+      context.getFilters().add(createFilter(authenticationModule));
       if (authorizationRequired(authorizationRole))
       {
-        context.getFilters().add(new NaMvcFilter(authorizationModule));
+        context.getFilters().add(createFilter(authorizationModule));
       }
     }
   }
@@ -59,5 +60,15 @@ public class NaMvcApp {
 
   private boolean authorizationRequired(String authorizationRole){
     return !authorizationRole.equals("Any");
+  }
+
+  private NaMvcFilter createFilter(NaMvcModule module)
+  {
+    return new NaMvcFilter(module, session);
+  }
+
+  private NaMvcFilter createBootStrapFilter(NaMvcModule module)
+  {
+    return new NaMvcFilter(module, session, true);
   }
 }

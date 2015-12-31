@@ -24,7 +24,7 @@ public class App {
       app.route("/page3", new PageController(), "Role3");
       app.route("/", new HomeController(), "Any");
       app.route("/login", new LoginController(usersRepository));
-      app.route("/logout", new LogoutController());
+      app.route("/logout", new LogoutController(), "Any");
 
       app.start();
     }

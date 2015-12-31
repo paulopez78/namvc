@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NaMvcHttpResponse {
+public class NaMvcHttpResponse implements  MvcHttpResponse{
     private final Map<String, List<String>> headers;
     private final HttpExchange exchange;
     public NaMvcHttpResponse(HttpExchange exchange)

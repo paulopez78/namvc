@@ -5,15 +5,16 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.List;
 
-public class NaMvcHttpRequest {
+public class NaMvcHttpRequest implements MvcHttpRequest{
 
     private final NaMvcHttpParameters parameters;
     private HttpExchange exchange;
 
-    public NaMvcHttpRequest(HttpExchange exchange) throws IOException {
+    public NaMvcHttpRequest(HttpExchange exchange) {
         this.exchange = exchange;
         this.parameters = new NaMvcHttpParameters(this.getQueryString(), this.getPostString());
     }
@@ -82,13 +83,19 @@ public class NaMvcHttpRequest {
         return requestedUri.getRawQuery();
     }
 
-    private String getPostString() throws IOException {
+    private String getPostString() {
         String query = "";
 
         if ("post".equalsIgnoreCase(this.getMethod())) {
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            query = br.readLine();
+            InputStreamReader isr = null;
+            try {
+                isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+                BufferedReader br = new BufferedReader(isr);
+                query = br.readLine();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 

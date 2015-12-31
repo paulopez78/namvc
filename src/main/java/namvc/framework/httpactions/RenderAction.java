@@ -1,6 +1,6 @@
 package namvc.framework.httpactions;
 
-import namvc.framework.httpcontext.NaMvcHttpResponse;
+import namvc.framework.httpcontext.MvcHttpResponse;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -21,7 +21,7 @@ public class RenderAction extends NaMvcAction {
     }
 
     @Override
-    public void execute(NaMvcHttpResponse response) throws IOException {
+    public void execute(MvcHttpResponse response) throws IOException {
         response.sendHttpCode(this.httpCode, html.length());
         response.write(html);
     }

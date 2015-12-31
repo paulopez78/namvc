@@ -27,7 +27,7 @@ public class LoginControllerTest {
         LoginController test = new LoginController(mockUsers);
 
         //Act
-        NaMvcAction result = test.postAction(mockSession, mockContext);
+        NaMvcAction result = test.postAction(mockContext);
 
         //Assert
         verify(mockSession).create(any(NaMvcPrincipal.class));
@@ -44,7 +44,7 @@ public class LoginControllerTest {
         LoginController test = new LoginController(mockUsers);
 
         //Act
-        NaMvcAction result = test.postAction(mockSession, mockContext);
+        NaMvcAction result = test.postAction(mockContext);
 
         //Assert
         verify(mockUsers).authenticate(anyString(),anyString());

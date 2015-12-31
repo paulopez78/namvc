@@ -10,7 +10,7 @@ import java.net.URLDecoder;
 public class NaMvcHttpParameters {
     private final Map<String, Object> parameters = new HashMap<>();
 
-    public NaMvcHttpParameters(String queryString, String postString) throws UnsupportedEncodingException {
+    public NaMvcHttpParameters(String queryString, String postString) {
         this.parseQuery(queryString, parameters);
         this.parseQuery(postString, parameters);
     }
@@ -25,8 +25,7 @@ public class NaMvcHttpParameters {
     }
 
      @SuppressWarnings("unchecked")
-     private void parseQuery(String query, Map<String, Object> parameters)
-         throws UnsupportedEncodingException {
+     private void parseQuery(String query, Map<String, Object> parameters) {
 
          if (query != null) {
              if (!query.equals("")) {
@@ -38,13 +37,21 @@ public class NaMvcHttpParameters {
                      String key = null;
                      String value = null;
                      if (param.length > 0) {
-                         key = URLDecoder.decode(param[0],
-                                 System.getProperty("file.encoding"));
+                         try {
+                             key = URLDecoder.decode(param[0],
+                                     System.getProperty("file.encoding"));
+                         } catch (UnsupportedEncodingException e) {
+                             e.printStackTrace();
+                         }
                      }
 
                      if (param.length > 1) {
-                         value = URLDecoder.decode(param[1],
-                                 System.getProperty("file.encoding"));
+                         try {
+                             value = URLDecoder.decode(param[1],
+                                     System.getProperty("file.encoding"));
+                         } catch (UnsupportedEncodingException e) {
+                             e.printStackTrace();
+                         }
                      }
 
                      if (parameters.containsKey(key)) {

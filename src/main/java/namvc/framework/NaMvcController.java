@@ -3,8 +3,7 @@ package namvc.framework;
 import namvc.framework.httpactions.NaMvcAction;
 import namvc.framework.httpactions.RedirectAction;
 import namvc.framework.httpactions.RenderAction;
-import namvc.framework.httpcontext.NaMvcHttpContext;
-import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.framework.httpcontext.MvcHttpContext;
 
 public abstract class NaMvcController{
   protected NaMvcView View;
@@ -14,11 +13,11 @@ public abstract class NaMvcController{
     this.View = createDefaultView();
   }
 
-  public NaMvcAction getAction(NaMvcHttpSession session, NaMvcHttpContext httpContext){
+  public NaMvcAction getAction(MvcHttpContext httpContext){
     return new RenderAction(View.render(null));
   }
 
-  public NaMvcAction postAction(NaMvcHttpSession session, NaMvcHttpContext httpContext)
+  public NaMvcAction postAction(MvcHttpContext httpContext)
   {
     return new RedirectAction("/");
   }

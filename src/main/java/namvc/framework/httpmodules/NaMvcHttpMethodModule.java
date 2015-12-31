@@ -2,54 +2,55 @@ package namvc.framework.httpmodules;
 
 import namvc.framework.*;
 import namvc.framework.httpactions.NaMvcAction;
-import namvc.framework.httpactions.SetSessionInfo;
-import namvc.framework.httpcontext.NaMvcHttpContext;
-import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.framework.httpactions.ServerErrorAction;
+import namvc.framework.httpcontext.MvcHttpContext;
+import namvc.framework.httpcontext.MvcHttpResponse;
 
 import java.io.IOException;
 
 public class NaMvcHttpMethodModule implements NaMvcModule {
-    private final NaMvcHttpSession session;
     private final NaMvcController controller;
 
-    public NaMvcHttpMethodModule(NaMvcHttpSession session, NaMvcController controller) {
+    public NaMvcHttpMethodModule(NaMvcController controller) {
         this.controller = controller;
-        this.session = session;
     }
 
-    public boolean execute(NaMvcHttpContext httpContext) throws IOException {
+    public boolean execute(MvcHttpContext httpContext) {
         System.out.println(httpContext.getRequest().toString());
 
         String requestMethod = httpContext.getRequest().getMethod();
         NaMvcAction responseAction = null;
 
-        if (requestMethod.equals("GET")) {
-            responseAction = controller.getAction(session, httpContext);
+        try {
+
+            if (requestMethod.equals("GET")) {
+            responseAction = controller.getAction(httpContext);
         }
 
         if (requestMethod.equals("POST")) {
-            responseAction = controller.postAction(session, httpContext);
+            responseAction = controller.postAction(httpContext);
         }
 
         if (responseAction == null) {
             throw new IOException("There is no response action for Method" + requestMethod);
         }
+            responseAction.execute(httpContext.getResponse(), httpContext.getSessionInfo());
+        }
+        catch (IOException e) {
+            handle(httpContext.getResponse(), e);
+            return false;
+        }
 
-        responseAction.execute(httpContext.getResponse(), createSessionInfo(httpContext));
         return true;
     }
 
-    private SetSessionInfo createSessionInfo(NaMvcHttpContext httpContext) {
-        String cookieName = session.getCookieName();
-        if (httpContext.authenticated())
-        {
-            int timeout = session.getTimeout();
-            String sessionId = httpContext.getSessionId();
-            return new SetSessionInfo(sessionId, cookieName, timeout);
-        }
-        else
-        {
-            return new SetSessionInfo(cookieName);
+    private void handle(MvcHttpResponse response, Exception ex)
+    {
+        NaMvcAction serverError = new ServerErrorAction(ex);
+        try {
+            serverError.execute(response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
