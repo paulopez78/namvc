@@ -1,8 +1,8 @@
 package namvc.framework.httpmodules;
 
 import namvc.framework.NaMvcPrincipal;
-import namvc.framework.httpcontext.NaMvcHttpContext;
-import namvc.framework.httpcontext.NaMvcHttpResponse;
+import namvc.framework.httpcontext.MvcHttpResponse;
+import namvc.framework.httpcontext.MvcHttpContext;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class NaMvcAuthorizationModuleTest {
         //Arrange
         NaMvcAuthorizationModule test = new NaMvcAuthorizationModule(allowedRole);
         NaMvcPrincipal principal = createPrincipal("user", userRole);
-        NaMvcHttpContext contextMock = createContext(principal);
+        MvcHttpContext contextMock = createContext(principal);
 
         //Act
         boolean result =test.execute(contextMock);
@@ -43,10 +43,10 @@ public class NaMvcAuthorizationModuleTest {
         return result;
     }
 
-    private NaMvcHttpContext createContext(NaMvcPrincipal principal) throws IOException {
-        NaMvcHttpContext context = mock(NaMvcHttpContext.class);
+    private MvcHttpContext createContext(NaMvcPrincipal principal) throws IOException {
+        MvcHttpContext context = mock(MvcHttpContext.class);
         when(context.getPrincipal()).thenReturn(principal);
-        when(context.getResponse()).thenReturn(mock(NaMvcHttpResponse.class));
+        when(context.getResponse()).thenReturn(mock(MvcHttpResponse.class));
         return context;
     }
 
