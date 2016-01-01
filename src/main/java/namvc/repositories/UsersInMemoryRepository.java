@@ -13,42 +13,9 @@ public class UsersInMemoryRepository implements UsersRepository
 
   private Map<String,String> userPasswords;
 
-  @Override
-  public void create()
+  public UsersInMemoryRepository()
   {
-    //TODO: read from a file
-    userRoles = new HashMap<String,List<String>>()
-    {
-      {
-          put("user1", new ArrayList<String>(){
-            {
-              add("Role1");
-              add("Role3");
-            }
-          });
-          put("user2", new ArrayList<String>(){
-            {
-              add("Role2");
-              add("Role3");
-            }
-          });
-          put("user3", new ArrayList<String>(){
-            {
-              add("Role3");
-            }
-          });
-      }
-    };
-
-    //TODO: store passwords hashed
-    userPasswords = new HashMap<String,String>()
-    {
-      {
-          put("user1","password");
-          put("user2","password");
-          put("user3","password");
-      }
-    };
+    this.create();
   }
 
   @Override
@@ -61,6 +28,43 @@ public class UsersInMemoryRepository implements UsersRepository
     }
 
     throw new Exception("Authentication failed");
+  }
+
+  private void create()
+  {
+    //TODO: read from a file
+    userRoles = new HashMap<String,List<String>>()
+    {
+      {
+        put("user1", new ArrayList<String>(){
+          {
+            add("Role1");
+            add("Role3");
+          }
+        });
+        put("user2", new ArrayList<String>(){
+          {
+            add("Role2");
+            add("Role3");
+          }
+        });
+        put("user3", new ArrayList<String>(){
+          {
+            add("Role3");
+          }
+        });
+      }
+    };
+
+    //TODO: store passwords hashed
+    userPasswords = new HashMap<String,String>()
+    {
+      {
+        put("user1","password");
+        put("user2","password");
+        put("user3","password");
+      }
+    };
   }
 
   private String applyHash(String password)

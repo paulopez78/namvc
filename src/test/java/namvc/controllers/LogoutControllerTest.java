@@ -3,7 +3,6 @@ package namvc.controllers;
 import namvc.framework.httpactions.NaMvcAction;
 import namvc.framework.httpactions.RedirectAction;
 import namvc.framework.httpcontext.MvcHttpContext;
-import namvc.framework.httpcontext.MvcHttpResponse;
 import org.junit.Test;
 
 import java.io.IOException;
