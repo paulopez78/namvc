@@ -1,6 +1,6 @@
-package namvc.framework;
+package namvc.framework.httpcontext;
 
-import namvc.framework.httpcontext.NaMvcHttpSession;
+import namvc.framework.NaMvcPrincipal;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
